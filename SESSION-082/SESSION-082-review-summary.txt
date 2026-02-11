@@ -1,0 +1,171 @@
+SESSION 082 - REVIEW SUMMARY
+==============================
+Topic: Variable Scoping, LHS Treatment, LEGB Rule, and UnboundLocalError in Python
+
+This session covers Python's variable scoping mechanics through 6 progressive scripts.
+All runnable scripts were executed and verified. Results documented below.
+
+------------------------------------------------------------------------
+FILE 1: 01-LHS-treatment.py
+------------------------------------------------------------------------
+Concept: LHS (Left-Hand Side) treatment of variable names.
+
+When a variable name appears on the LHS of an assignment for the first
+time in a scope, Python creates it in that scope's symbol table:
+  - m = 100   -> created in global symbol table
+  - n = 200   -> created in f1()'s local symbol table
+  - k = 300   -> created in f2()'s local symbol table
+
+Run result: Executes silently with no output (no print statements). No errors.
+
+------------------------------------------------------------------------
+FILE 2: 02-One-Definition-Rule.py
+------------------------------------------------------------------------
+Concept: One Definition Rule -- a variable name can only be defined once
+per scope. Redefining it in the same scope is a reassignment, not a new
+definition. Defining a new function creates a new scope where the same
+name can be independently defined.
+
+The script demonstrates three simultaneous versions of N:
+  - Global N = 100
+  - f1() local N = 200
+  - f2() local N = 300
+
+Run result:
+  global symbol table:globals(): { ... 'N': 100 }
+  local symbol table of f1(): {'N': 200}
+  local symbol table of f2(): {'N': 300}
+
+Each scope maintains its own independent version of N, confirmed via
+globals() and locals() introspection.
+
+------------------------------------------------------------------------
+FILE 3: 03-LEGB-Scope-Rule.py
+------------------------------------------------------------------------
+Concept: LEGB (Local, Enclosing, Global, Built-in) scope resolution rule.
+Python searches for a variable name in this order: Local -> Enclosing ->
+Global -> Built-in. If not found in any scope, a NameError is raised.
+
+Contains 7 code snippets (some use pseudocode for illustration):
+
+Snippet 1 - Local scope shadows global:
+  Output: global():N: 100 / f():N: 200
+  f() defines its own N=200, which shadows global N=100.
+
+Snippet 2 - Enclosing/Global scope lookup:
+  Output: f():N: 100
+  f() has no local N, so Python finds N=100 in global scope.
+
+Snippet 3 - Enclosing scope lookup:
+  Output: f2():N: 200
+  f2() has no local N, so Python finds N=200 in enclosing f1() scope.
+
+Snippet 4 - NameError for undefined M:
+  Output: f1():N: 100 / f2():N: 100
+  Then raises NameError: name 'M' is not defined
+  N resolves via LEGB to global scope (100), but M is not defined anywhere.
+
+Snippets 5-7: Pseudocode illustrations of nested scope structures
+  (contain BLOCK placeholders; not executable; illustrate scope nesting).
+
+------------------------------------------------------------------------
+FILE 4: 04-UnboundLocalError.py
+------------------------------------------------------------------------
+Concept: UnboundLocalError occurs when a variable is used on the LHS
+anywhere in a function, making Python treat it as local for the ENTIRE
+function -- even lines before the assignment.
+
+Case 1:
+  n = 100 (global)
+  def f():
+      print(n)    # UnboundLocalError -- n is local due to line below
+      n = 200
+  Result: UnboundLocalError: cannot access local variable 'n' where it
+          is not associated with a value
+
+Case 2:
+  n = 100 (global)
+  def f():
+      n = n + 1   # UnboundLocalError -- n is local but used before assignment
+  Result: UnboundLocalError: cannot access local variable 'n' where it
+          is not associated with a value
+
+Key insight: Python determines scope at compile-time (bytecode compilation),
+not at runtime. The presence of any LHS assignment to n anywhere in the
+function makes n local for the entire function body.
+
+------------------------------------------------------------------------
+FILE 5: 05-NameError-FreeVariable-Version.py
+------------------------------------------------------------------------
+Concept: NameError with free variables. A free variable in a nested
+function references a variable from the enclosing scope. The variable
+must be bound (have a value) at the time the inner function executes.
+
+Case 1 (no error):
+  n = 100 defined before g() is defined and called.
+  Output: 100
+
+Case 2 (no error):
+  n = 100 defined after g() is defined but before g() is called.
+  Output: 100
+  (Free variable lookup happens at call time, not definition time.)
+
+Case 3 (NameError):
+  g() is called before n = 100 executes.
+  Result: NameError: cannot access free variable 'n' where it is not
+          associated with a value in enclosing scope
+
+Case 4 (NameError):
+  n = 100 is defined, then deleted with 'del n' before g() is called.
+  Result: NameError: cannot access free variable 'n' where it is not
+          associated with a value in enclosing scope
+
+Key insight: Scope determination (whether n is a free variable) is done
+at compile time, but the actual value lookup happens at runtime. The
+enclosing variable must exist and be bound when the inner function runs.
+
+------------------------------------------------------------------------
+FILE 6: 06-Complete-List-Of-LHS-Sense-Use-Of-Variable-Name.py
+------------------------------------------------------------------------
+Concept: Complete enumeration of all 7 ways a variable name can be used
+in LHS sense (i.e., where Python creates a new binding):
+
+  1. Assignment:       a = 100
+  2. Function def:     def f(): ...
+  3. Class def:        class T: ...
+  4. Import:           import Package
+  5. With-as:          with RHS as v: ...
+  6. Except-as:        except ExceptionName as e: ...
+  7. For-loop:         for x in L: ...
+
+This file is a reference/pseudocode listing. It is not executable.
+
+------------------------------------------------------------------------
+OVERALL SESSION ASSESSMENT
+------------------------------------------------------------------------
+Session 082 provides a thorough introduction to Python's scoping rules:
+
+1. LHS treatment establishes how variables are created in their scope's
+   symbol table (compile-time decision).
+
+2. One Definition Rule clarifies that each scope holds at most one
+   binding for a given name; the same name can exist independently
+   across different scopes.
+
+3. LEGB rule governs how Python resolves names at runtime: Local ->
+   Enclosing -> Global -> Built-in.
+
+4. UnboundLocalError demonstrates the critical distinction between
+   compile-time scope determination and runtime value access -- the
+   most common Python scoping pitfall.
+
+5. NameError (free variable version) extends the concept to closures,
+   showing that free variable references are resolved at call time,
+   not at definition time.
+
+6. The 7 LHS-sense constructs provide a complete reference for all
+   the syntactic forms that create name bindings in Python.
+
+All executable code runs correctly and produces the expected output,
+including the intentional error demonstrations (UnboundLocalError and
+NameError). The pseudocode files serve their reference purpose well.
