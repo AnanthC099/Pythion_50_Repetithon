@@ -17,7 +17,7 @@ def my_func_2():                                # global scope
     result = []                                 # local scope wrt my_func_2()
     for p in L:                                 # local scope wrt my_func_2()
         for q in M:                             # local scope wrt my_func_2()
-            T = (p, q):                         # local scope wrt my_func_2()
+            T = (p, q)                          # local scope wrt my_func_2()
             result.append(T)                    # local scope wrt my_func_2()
     print(result)                               # local scope wrt my_func_2()
 
