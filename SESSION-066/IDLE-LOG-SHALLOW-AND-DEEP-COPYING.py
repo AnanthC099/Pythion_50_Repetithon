@@ -1,180 +1,127 @@
-Python 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)] on win32
-Enter "help" below or click "Help" above for more information.
+# IDLE-LOG-SHALLOW-AND-DEEP-COPYING.py
+# Converted from IDLE session log to executable Python script
+# Topic: Shallow and Deep Copying in Python
+
+import copy
+
+# ---- Assignment is aliasing, not copying ----
+print("--- Assignment is aliasing ---")
 b1 = True
 b2 = b1
-id(b1)
-140734956161792
-id(b2)
-140734956161792
+print("id(b1):", id(b1))
+print("id(b2):", id(b2))
+print("b1 is b2:", b1 is b2)
+
 L1 = [10, 20, 30]
 L2 = L1
-id(L1)
-2339489160320
-id(L2)
-2339489160320
-#-------------------------
-# Mutable objects can be cloned explicitly.
-# Implicit cloning
+print("\nid(L1):", id(L1))
+print("id(L2):", id(L2))
+print("L1 is L2:", L1 is L2)
+
+# ---- Implicit cloning of immutable objects ----
+print("\n--- Implicit cloning of immutable objects ---")
 n = 1.1
 m = 1.1
-print(m)
-1.1
-print(n)
-1.1
-id(m)
-2339488155184
-id(n)
-2339488155120
-m == n
-True
-m is n
-False
-# Explicit cloning using copy method
+print("m:", m)
+print("n:", n)
+print("id(m):", id(m))
+print("id(n):", id(n))
+print("m == n:", m == n)
+print("m is n:", m is n)
+
+# ---- Explicit cloning using copy method (shallow copy) ----
+print("\n--- Shallow copy using .copy() method ---")
+
+# List copy
 L = [10, 20, 30]
 L1 = L.copy()
-L == L1
-True
-L
-[10, 20, 30]
-L1
-[10, 20, 30]
-id(L)
-2339489282496
-id(L1)
-2339489167552
-L is L1
-False
-D1 = {'a' : 10, 'b': 20, 'c' : 30}
+print("L == L1:", L == L1)
+print("L:", L)
+print("L1:", L1)
+print("id(L):", id(L))
+print("id(L1):", id(L1))
+print("L is L1:", L is L1)
+
+# Dict copy
+D1 = {'a': 10, 'b': 20, 'c': 30}
 D2 = D1.copy()
-id(D1)
-2339489218496
-id(D2)
-2339489218304
-D1 == D2
-True
-D1 is D2
-False
+print("\nid(D1):", id(D1))
+print("id(D2):", id(D2))
+print("D1 == D2:", D1 == D2)
+print("D1 is D2:", D1 is D2)
+
+# Set copy
 S1 = {100, 200, 300}
 S2 = S1.copy()
-S1 == S2
-True
-S1 is S2
-False
-b1 = False
-b1.copy()
-Traceback (most recent call last):
-  File "<pyshell#39>", line 1, in <module>
-    b1.copy()
-AttributeError: 'bool' object has no attribute 'copy'
-n = 100
-n.copy()
-Traceback (most recent call last):
-  File "<pyshell#41>", line 1, in <module>
-    n.copy()
-AttributeError: 'int' object has no attribute 'copy'
-f_num = 1.1
-f_num.copy()
-Traceback (most recent call last):
-  File "<pyshell#43>", line 1, in <module>
-    f_num.copy()
-AttributeError: 'float' object has no attribute 'copy'
-s1 = "Hello
-SyntaxError: unterminated string literal (detected at line 1)
-s1 = "Hello"
-s1.copy()
-Traceback (most recent call last):
-  File "<pyshell#46>", line 1, in <module>
-    s1.copy()
-AttributeError: 'str' object has no attribute 'copy'
-T = (100, 200, 300)
-T.copy()
-Traceback (most recent call last):
-  File "<pyshell#48>", line 1, in <module>
-    T.copy()
-AttributeError: 'tuple' object has no attribute 'copy'
-# ARGUMENT -> COPY FUNCTION IS A SHALLOW VERSION OF DEEP COPYING
+print("\nS1 == S2:", S1 == S2)
+print("S1 is S2:", S1 is S2)
+
+# Immutable types do NOT have .copy()
+print("\n--- Immutable types do NOT have .copy() ---")
+for obj, name in [(False, 'bool'), (100, 'int'), (1.1, 'float'), ("Hello", 'str'), ((100, 200, 300), 'tuple')]:
+    try:
+        obj.copy()
+    except AttributeError as e:
+        print(f"{name}.copy() -> {e}")
+
+# ---- Shallow copy problem with nested mutable objects ----
+print("\n--- Shallow copy problem ---")
 L1 = [10, 20, 30, 40]
 L2 = L1.copy()
-id(L1)
-2339488325696
-id(L2)
-2339489381952
-L1 is L2
-False
-L1 == L2
-True
+print("id(L1):", id(L1))
+print("id(L2):", id(L2))
+print("L1 is L2:", L1 is L2)
+print("L1 == L2:", L1 == L2)
+
+print("\nElement IDs in L1:")
 for x in L1:
     print(x, id(x))
-
-    
-10 140734957069720
-20 140734957070040
-30 140734957070360
-40 140734957070680
+print("Element IDs in L2:")
 for x in L2:
     print(x, id(x))
 
-    
-10 140734957069720
-20 140734957070040
-30 140734957070360
-40 140734957070680
-# as 10, 20, 30, 40 all are immutable objects, them being shared across L1 & L2 is NOT PARTICULARLY PROBLEMETIC
-# IF A LIST CONTAINS A MUTABLE OBJECT INSIDE IT THEN IT BECOMES PROBLEMETIC
+# As 10, 20, 30, 40 are all immutable, sharing across L1 & L2 is NOT problematic
+# IF A LIST CONTAINS A MUTABLE OBJECT INSIDE IT THEN IT BECOMES PROBLEMATIC
+print("\n--- Nested mutable object with shallow copy ---")
 L1 = [10, 20, 30, [100, 200, 300], 40]
 L2 = L1.copy()
-id(L1)
-2339489167936
-id(L2)
-2339488325696
-L1 is L2
-False
-L1 == L2
-True
-L1[3]
-[100, 200, 300]
-L2[3]
-[100, 200, 300]
-id(L1[3])
-2339444617088
-id(L2[3])
-2339444617088
+print("id(L1):", id(L1))
+print("id(L2):", id(L2))
+print("L1 is L2:", L1 is L2)
+print("L1 == L2:", L1 == L2)
+print("L1[3]:", L1[3])
+print("L2[3]:", L2[3])
+print("id(L1[3]):", id(L1[3]))
+print("id(L2[3]):", id(L2[3]))
+print("L1[3] is L2[3]:", L1[3] is L2[3])
+
 L1[3].append(400)
-L2
-[10, 20, 30, [100, 200, 300, 400], 40]
->>> import copy
->>> L1 = [10, 20, 30, [100, 200, 300], 40]
->>> L2 = copy.deepcopy(L1)
->>> id(L1)
-2339489410304
->>> id(L2)
-2339489167488
->>> id(L1[0])
-140734957069720
->>> id(L2[0])
-140734957069720
->>> id(L1[1])
-140734957070040
->>> id(L2[1])
-140734957070040
->>> id(L1[2])
-140734957070360
->>> id(L2[2])
-140734957070360
->>> id(L1[3])
-2339489409344
->>> id(L2[3])
-2339489160320
->>> L1[3].append(400)
->>> L2
-[10, 20, 30, [100, 200, 300], 40]
->>> L1
-[10, 20, 30, [100, 200, 300, 400], 40]
->>> L1[3]
-[100, 200, 300, 400]
->>> L2[3]
-[100, 200, 300]
->>> id(L1[3][0])
-140734957072600
->>> id(L2[3][0])
-140734957072600
+print("\nAfter L1[3].append(400):")
+print("L1:", L1)
+print("L2:", L2, " <-- L2 also changed!")
+
+# ---- Deep copy solves this problem ----
+print("\n--- Deep copy with copy.deepcopy() ---")
+L1 = [10, 20, 30, [100, 200, 300], 40]
+L2 = copy.deepcopy(L1)
+print("id(L1):", id(L1))
+print("id(L2):", id(L2))
+
+# Immutable elements still share the same id
+print("\nImmutable elements (shared):")
+print("id(L1[0]):", id(L1[0]), "id(L2[0]):", id(L2[0]))
+print("id(L1[1]):", id(L1[1]), "id(L2[1]):", id(L2[1]))
+print("id(L1[2]):", id(L1[2]), "id(L2[2]):", id(L2[2]))
+
+# Mutable nested list gets its own copy
+print("\nMutable nested list (independent copies):")
+print("id(L1[3]):", id(L1[3]))
+print("id(L2[3]):", id(L2[3]))
+print("L1[3] is L2[3]:", L1[3] is L2[3])
+
+L1[3].append(400)
+print("\nAfter L1[3].append(400):")
+print("L1:", L1)
+print("L2:", L2, " <-- L2 NOT affected!")
+print("L1[3]:", L1[3])
+print("L2[3]:", L2[3])
