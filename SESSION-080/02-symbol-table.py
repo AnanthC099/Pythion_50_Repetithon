@@ -10,11 +10,11 @@ print('globals():after gnum = 5000', globals()) # look for the last item in dict
                                                 # to get gnum 
 print('-----------------------------------------------------------------------')
 import math 
-import tkinter 
+import json
 
-print('globals():after import math and import tkinter:', globals()) # look for the last two iterms in 
-                                                                    # dictionary to get math and tkinter 
-                                                                    # entries 
+print('globals():after import math and import json:', globals()) # look for the last two items in
+                                                                 # dictionary to get math and json
+                                                                 # entries
 print('-----------------------------------------------------------------------')
 def test_function(): 
     print("1:initial state of local symbol table:locals():", locals()) # {} 
