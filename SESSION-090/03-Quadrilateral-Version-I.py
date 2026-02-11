@@ -15,7 +15,7 @@ Q2 = Quadrilateral(5.3, 6.8, 2.9, 5.5)
 print('Q1.__dict__:', Q1.__dict__)
 print('Q2.__dict__:', Q2.__dict__)
 
-p_Q1 = Q1.perimeter(data, data, data)  # Quadrilateral.perimeter(Q1)
+p_Q1 = Q1.perimeter()  # Quadrilateral.perimeter(Q1)
 p_Q2 = Q2.perimeter()
 
-print(f'Perimter(Q1):{p_Q1}, Perimeter(Q2):{p_Q2}')
+print(f'Perimeter(Q1):{p_Q1}, Perimeter(Q2):{p_Q2}')
