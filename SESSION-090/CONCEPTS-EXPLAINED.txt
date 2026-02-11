@@ -1,0 +1,79 @@
+SESSION-090: Concepts Explained
+=================================
+
+This session focuses on Object-Oriented Programming (OOP) in Python,
+specifically on Classes, Objects, the __init__ constructor, and Instance Attributes,
+demonstrated through a Quadrilateral example.
+
+---------------------------------------------------------------
+01-QuadrilateralPrep.py
+---------------------------------------------------------------
+Concept: Class Definition, Object Creation, __init__ Constructor, type() and id()
+
+- Defines a basic class `Quadrilateral` with an `__init__` method (constructor).
+- Demonstrates that `__init__` is called automatically when an object is created.
+- Uses `type(self)` inside __init__ to show that `self` refers to the
+  instance being created (e.g., <class '__main__.Quadrilateral'>).
+- Uses `id(self)` inside __init__ to show the unique memory address of the object.
+- Creates two separate objects Q1 and Q2 and prints their type and id,
+  proving each object is a distinct instance occupying different memory locations.
+
+Key Takeaway: Every time a class is called (e.g., Quadrilateral()), Python
+creates a new object in memory and automatically invokes __init__ with
+that object as `self`.
+
+---------------------------------------------------------------
+02-QuadrilateralPrep.py
+---------------------------------------------------------------
+Concept: Instance Attributes, __dict__, Dynamic Attribute Management (Add, Modify, Delete, Access)
+
+- Shows how instance attributes (s1, s2, s3, s4) are added one by one
+  inside __init__ using `self.attribute = value`.
+- Prints `self.__dict__` after each attribute assignment to visualize how
+  the object's internal dictionary grows incrementally.
+- Demonstrates that `id(self)` inside __init__ matches `id(Q1)` outside,
+  confirming `self` and Q1 reference the same object.
+- After object creation, shows four dynamic attribute operations:
+    1. Adding a new attribute:    Q1.quad_type = 'Scalen'
+    2. Modifying an attribute:    Q1.s3 = 8.6
+    3. Deleting an attribute:     del Q1.quad_type
+    4. Accessing attributes:      Q1.s1, Q1.s2, etc.
+- Uses __dict__ to inspect the object's state after each operation.
+
+Key Takeaway: In Python, objects store their attributes in an internal
+dictionary (__dict__). Attributes can be dynamically added, modified,
+deleted, and accessed at any time after object creation.
+
+---------------------------------------------------------------
+03-Quadrilateral-Version-I.py
+---------------------------------------------------------------
+Concept: Parameterized __init__ Constructor, Instance Methods, Encapsulation
+
+- Enhances the class by accepting four side lengths as parameters in __init__
+  (init_s1, init_s2, init_s3, init_s4), making object creation flexible.
+- Defines an instance method `perimeter(self)` that computes and returns
+  the sum of all four sides using the object's own attributes.
+- Creates two objects Q1 and Q2 with different side values, showing how
+  the same class can produce objects with different data.
+- Calls Q1.perimeter() and Q2.perimeter(), demonstrating that Python
+  internally translates `Q1.perimeter()` to `Quadrilateral.perimeter(Q1)`,
+  automatically passing the object as `self`.
+- Uses __dict__ to display each object's unique attribute values.
+
+Key Takeaway: Parameterized constructors allow flexible object initialization.
+Instance methods operate on the calling object's data through `self`,
+enabling each object to behave according to its own state.
+
+---------------------------------------------------------------
+GENERAL-SYNTAX.txt
+---------------------------------------------------------------
+Concept: Quick Reference for Object Attribute Operations
+
+- Summarizes the syntax for four fundamental attribute operations:
+    1. Add new attribute:       v.new_attribute_name = value
+    2. Modify existing:         v.existing_attribute_name = new_value
+    3. Delete attribute:        del v.existing_attribute_name
+    4. Access attribute value:  v.existing_attribute_name (on RHS)
+
+Key Takeaway: A concise cheat-sheet for working with object attributes
+dynamically in Python.
