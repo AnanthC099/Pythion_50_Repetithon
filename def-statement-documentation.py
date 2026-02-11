@@ -4,13 +4,16 @@
 ======================================================================================
 
     This file covers:
-        PART 1 : def Statement — Basics (SESSION-010, 011, 042)
-        PART 2 : Advanced def Statement — Nested def (SESSION-079, 080)
-        PART 3 : globals() and locals() — Symbol Tables (SESSION-080)
-        PART 4 : Scopes, LEGB Rule, UnboundLocalError, NameError (SESSION-081, 082, 083)
-        PART 5 : global Statement and nonlocal Statement (SESSION-084)
-        PART 6 : Implicit State Saving, Closures, Function Factory (SESSION-085, 086)
-        PART 7 : Parameter Passing — Exhaustive Treatment (SESSION-068, 087, 088)
+        PART 1  : def Statement — Basics (SESSION-010, 011, 042)
+        PART 2  : Advanced def Statement — Nested def (SESSION-079, 080)
+        PART 3  : globals() and locals() — Symbol Tables (SESSION-080)
+        PART 4  : Scopes, LEGB Rule, UnboundLocalError, NameError (SESSION-081, 082, 083)
+        PART 5  : global Statement and nonlocal Statement (SESSION-084)
+        PART 6  : Implicit State Saving, Closures, Function Factory (SESSION-085, 086)
+        PART 6A : Function Object Attributes (__name__, __dict__, __annotations__, __code__)
+        PART 6B : Local Static-Like Variables in Python (closure & function attribute)
+        PART 7  : Parameter Passing — Exhaustive Treatment (SESSION-068, 087, 088)
+        PART 8  : Universal Function Wrapper (*args, **kwargs, decorator pattern)
 
 ======================================================================================
 """
@@ -718,6 +721,215 @@ print('  t.getn():', t.getn())   # 500
 
 
 # ╔════════════════════════════════════════════════════════════════════════════════════╗
+# ║  PART 6A : FUNCTION OBJECT ATTRIBUTES (ADVANCED def FEATURE)                     ║
+# ║  function.__name__, __dict__, __annotations__, __code__                           ║
+# ╚════════════════════════════════════════════════════════════════════════════════════╝
+
+"""
+FUNCTION OBJECT ATTRIBUTES:
+    Every function in Python is an object of type <class 'function'>.
+    Function objects have several built-in attributes that provide
+    introspection into the function's metadata:
+
+    function.__name__        : The name of the function as a string
+    function.__dict__        : The function's namespace (custom attributes)
+    function.__annotations__ : Dictionary of parameter and return type annotations
+    function.__code__        : The compiled bytecode object of the function
+
+    These attributes allow you to inspect functions at runtime —
+    what they are called, what types they expect, and even their bytecode details.
+"""
+
+print('\n' + '=' * 70)
+print('PART 6A: FUNCTION OBJECT ATTRIBUTES')
+print('  function.__name__, __dict__, __annotations__, __code__')
+print('=' * 70)
+
+# --- 6A.1 function.__name__ ---
+print('\n--- 6A.1 function.__name__ ---')
+
+def greet(name: str) -> str:
+    return f'Hello, {name}!'
+
+print('  greet.__name__:', greet.__name__)           # 'greet'
+
+def outer_name_demo():
+    def inner_name_demo():
+        pass
+    print('  inner.__name__:', inner_name_demo.__name__)  # 'inner_name_demo'
+    return inner_name_demo
+
+X_name = outer_name_demo()
+print('  X.__name__ (returned inner function):', X_name.__name__)  # still 'inner_name_demo'
+
+# --- 6A.2 function.__annotations__ ---
+print('\n--- 6A.2 function.__annotations__ ---')
+
+def compute(a: int, b: float, c: str = 'default') -> bool:
+    return True
+
+print('  compute.__annotations__:', compute.__annotations__)
+# {'a': <class 'int'>, 'b': <class 'float'>, 'c': <class 'str'>, 'return': <class 'bool'>}
+
+def linear_search_annotated(L: list, search_data: int) -> bool:
+    for x in L:
+        if x == search_data:
+            return True
+    return False
+
+print('  linear_search_annotated.__annotations__:', linear_search_annotated.__annotations__)
+
+def no_annotations(a, b, c):
+    pass
+
+print('  no_annotations.__annotations__:', no_annotations.__annotations__)  # {}
+
+# --- 6A.3 function.__dict__ ---
+print('\n--- 6A.3 function.__dict__ (custom attributes on function objects) ---')
+
+def my_func():
+    pass
+
+print('  my_func.__dict__ (initial):', my_func.__dict__)   # {}
+
+# You can attach custom attributes to function objects
+my_func.version = '1.0'
+my_func.author = 'Yogeshwar'
+
+print('  my_func.__dict__ (after adding attributes):', my_func.__dict__)
+# {'version': '1.0', 'author': 'Yogeshwar'}
+
+print('  my_func.version:', my_func.version)
+print('  my_func.author:', my_func.author)
+
+# --- 6A.4 function.__code__ ---
+print('\n--- 6A.4 function.__code__ (bytecode object) ---')
+
+def sample_func(x, y, z):
+    result = x + y + z
+    return result
+
+code_obj = sample_func.__code__
+print('  sample_func.__code__:', code_obj)
+print('  co_varnames (local variable names):', code_obj.co_varnames)
+# ('x', 'y', 'z', 'result')
+print('  co_argcount (number of positional args):', code_obj.co_argcount)
+# 3
+print('  co_name (function name from bytecode):', code_obj.co_name)
+# 'sample_func'
+
+# Demonstrating with nested function
+def outer_code():
+    N = 100
+    def inner_code(a, b):
+        return a + b + N
+    return inner_code
+
+inner_ref = outer_code()
+print('\n  inner function __code__:')
+print('  co_varnames:', inner_ref.__code__.co_varnames)
+print('  co_argcount:', inner_ref.__code__.co_argcount)
+print('  co_freevars (free variables from enclosing scope):', inner_ref.__code__.co_freevars)
+# ('N',)
+
+# --- 6A.5 Summary: All key function attributes at a glance ---
+print('\n--- 6A.5 All key function attributes at a glance ---')
+
+def demo_all(a: int, b: float = 2.5) -> str:
+    """A demo function showing all attributes."""
+    result = str(a) + str(b)
+    return result
+
+print(f'  __name__        : {demo_all.__name__}')
+print(f'  __annotations__ : {demo_all.__annotations__}')
+print(f'  __dict__        : {demo_all.__dict__}')
+print(f'  __doc__         : {demo_all.__doc__}')
+print(f'  __defaults__    : {demo_all.__defaults__}')
+print(f'  __code__.co_varnames  : {demo_all.__code__.co_varnames}')
+print(f'  __code__.co_argcount  : {demo_all.__code__.co_argcount}')
+
+
+# ╔════════════════════════════════════════════════════════════════════════════════════╗
+# ║  PART 6B : LOCAL STATIC-LIKE VARIABLES IN PYTHON (ADVANCED def FEATURE)          ║
+# ╚════════════════════════════════════════════════════════════════════════════════════╝
+
+"""
+LOCAL STATIC-LIKE VARIABLES IN PYTHON:
+    In C/C++, a static local variable retains its value between function calls.
+    Python does NOT have a 'static' keyword, but closures (implicit state saving)
+    provide equivalent functionality.
+
+    When a nested function (inner) retains access to a variable from its
+    enclosing scope (outer) even after the outer function has returned,
+    the enclosing variable behaves like a "local static variable" — it persists
+    across multiple calls to the inner function.
+
+    Two techniques:
+    1) Closure with nonlocal — inner function reads and modifies enclosing variable
+    2) Function attribute — store state directly on the function object via __dict__
+"""
+
+print('\n' + '=' * 70)
+print('PART 6B: LOCAL STATIC-LIKE VARIABLES IN PYTHON')
+print('=' * 70)
+
+# --- 6B.1 Static-like variable using closure (nonlocal) ---
+print('\n--- 6B.1 Static-like variable using closure (nonlocal) ---')
+
+def make_counter():
+    count = 0               # This acts as a "static local variable"
+    def counter():
+        nonlocal count
+        count += 1
+        return count
+    return counter
+
+my_counter = make_counter()
+print('  Call 1:', my_counter())    # 1
+print('  Call 2:', my_counter())    # 2
+print('  Call 3:', my_counter())    # 3
+print('  Call 4:', my_counter())    # 4
+# count persists across calls — behaves like C static local variable!
+
+# Each call to make_counter() creates an independent counter
+another_counter = make_counter()
+print('  another_counter Call 1:', another_counter())   # 1 (independent!)
+print('  my_counter Call 5:', my_counter())             # 5 (continues from 4)
+
+# --- 6B.2 Static-like variable using function attribute ---
+print('\n--- 6B.2 Static-like variable using function __dict__ ---')
+
+def counter_with_attr():
+    counter_with_attr.count += 1
+    return counter_with_attr.count
+
+counter_with_attr.count = 0     # Initialize via function's __dict__
+
+print('  Call 1:', counter_with_attr())    # 1
+print('  Call 2:', counter_with_attr())    # 2
+print('  Call 3:', counter_with_attr())    # 3
+print('  __dict__:', counter_with_attr.__dict__)   # {'count': 3}
+
+# --- 6B.3 Accumulator — practical use of static-like variable ---
+print('\n--- 6B.3 Accumulator — practical use of static-like variable ---')
+
+def make_accumulator(initial_value=0):
+    total = initial_value
+    def accumulate(amount):
+        nonlocal total
+        total += amount
+        return total
+    return accumulate
+
+acc = make_accumulator(0)
+print('  acc(10):', acc(10))    # 10
+print('  acc(20):', acc(20))    # 30
+print('  acc(5):', acc(5))      # 35
+print('  acc(15):', acc(15))    # 50
+# total persists across calls like a static variable!
+
+
+# ╔════════════════════════════════════════════════════════════════════════════════════╗
 # ║  PART 7 : PARAMETER PASSING — EXHAUSTIVE TREATMENT (SESSION-068, 087, 088)       ║
 # ╚════════════════════════════════════════════════════════════════════════════════════╝
 
@@ -968,6 +1180,169 @@ testFunction_workaround(10, 20, 30, y=20.25)
 
 
 # ╔════════════════════════════════════════════════════════════════════════════════════╗
+# ║  PART 8 : UNIVERSAL FUNCTION WRAPPER (ADVANCED def FEATURE)                      ║
+# ╚════════════════════════════════════════════════════════════════════════════════════╝
+
+"""
+UNIVERSAL FUNCTION WRAPPER:
+    A function that can wrap ANY other function regardless of its parameter list.
+    Uses *args and **kwargs to accept and forward all arguments.
+
+    The universal formal parameter list:  def wrapper(*args, **kwargs)
+    This can accept ANY combination of positional and keyword arguments.
+
+    Practical applications:
+    - Logging / tracing function calls
+    - Timing function execution
+    - Decorator pattern (decorator is built on top of universal wrapper)
+"""
+
+print('\n' + '=' * 70)
+print('PART 8: UNIVERSAL FUNCTION WRAPPER')
+print('=' * 70)
+
+# --- 8.1 Universal formal parameter list ---
+print('\n--- 8.1 Universal formal parameter list ---')
+
+def universal_accept(*args, **kwargs):
+    """This function can accept ANY call signature."""
+    print('  args:', args)
+    print('  kwargs:', kwargs)
+
+print('  Call with positional only:')
+universal_accept(10, 20, 30)
+
+print('  Call with keyword only:')
+universal_accept(a=10, b=20, c=30)
+
+print('  Call with mixed:')
+universal_accept(10, 20, c=30, d=40)
+
+print('  Call with no arguments:')
+universal_accept()
+
+# --- 8.2 Universal function wrapper pattern ---
+print('\n--- 8.2 Universal function wrapper pattern ---')
+
+def universal_wrapper(func):
+    """Wraps any function — forwards all arguments, returns result."""
+    def replacement_function(*args, **kwargs):
+        print(f'  [WRAPPER] Calling {func.__name__}')
+        print(f'  [WRAPPER] args: {args}')
+        print(f'  [WRAPPER] kwargs: {kwargs}')
+        result = func(*args, **kwargs)
+        print(f'  [WRAPPER] {func.__name__} returned: {result}')
+        return result
+    return replacement_function
+
+# Apply wrapper to different functions with different signatures
+
+def add(a, b):
+    return a + b
+
+def greet_person(name, greeting='Hello'):
+    return f'{greeting}, {name}!'
+
+def compute_power(base, *exponents):
+    results = []
+    for exp in exponents:
+        results.append(base ** exp)
+    return results
+
+wrapped_add = universal_wrapper(add)
+wrapped_greet = universal_wrapper(greet_person)
+wrapped_power = universal_wrapper(compute_power)
+
+print('\n  Wrapped add(10, 20):')
+wrapped_add(10, 20)
+
+print('\n  Wrapped greet("Ananth", greeting="Namaste"):')
+wrapped_greet("Ananth", greeting="Namaste")
+
+print('\n  Wrapped compute_power(2, 1, 2, 3, 4, 5):')
+wrapped_power(2, 1, 2, 3, 4, 5)
+
+# --- 8.3 Logger — Real-world universal wrapper (from OPEN_FOR_ALL_WEEK) ---
+print('\n--- 8.3 Logger — Real-world universal wrapper ---')
+
+"""
+Real-world example from OPEN_FOR_ALL_WEEK/DEMONSTRATION_CODE/logger.py:
+
+    def logger(decorated_function_object):
+        def replacement_function(*args, **kwargs):
+            # Log function name using decorated_function_object.__name__
+            # Log all non-keyword arguments from args
+            # Log all keyword arguments from kwargs
+            ret = decorated_function_object(*args, **kwargs)
+            # Log return value
+            return ret
+        return replacement_function
+
+Usage with @ decorator syntax:
+    @logger
+    def compute1(a, b, c):
+        return (a - b) * (b + c) + (c - a)
+
+    ret = compute1(10, b=20, c=30)
+
+The logger wraps ANY function regardless of its parameter list
+by using the universal wrapper pattern: *args, **kwargs
+"""
+
+# Simplified logger demonstration (without file I/O)
+def simple_logger(func):
+    def replacement(*args, **kwargs):
+        print(f'  [LOG] Called: {func.__name__}')
+        print(f'  [LOG] Non-keyword args: {args}')
+        print(f'  [LOG] Keyword args: {kwargs}')
+        ret = func(*args, **kwargs)
+        print(f'  [LOG] Return value: {ret}, Type: {type(ret)}')
+        return ret
+    return replacement
+
+@simple_logger
+def compute1(a, b, c):
+    rs1 = a - b
+    rs2 = b + c
+    rs3 = c - a
+    return (rs1 * rs2) + rs3
+
+@simple_logger
+def compute2(x, y):
+    return x**2 - y**2
+
+print('\n  compute1(10, b=20, c=30):')
+ret = compute1(10, b=20, c=30)
+
+print('\n  compute2(3, y=1):')
+ret = compute2(3, y=1)
+
+# --- 8.4 Timing wrapper — Another practical universal wrapper ---
+print('\n--- 8.4 Timing wrapper — Another practical universal wrapper ---')
+
+import time
+
+def timing_wrapper(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f'  [TIMER] {func.__name__} took {end - start:.6f} seconds')
+        return result
+    return wrapper
+
+@timing_wrapper
+def slow_sum(n):
+    total = 0
+    for i in range(n):
+        total += i
+    return total
+
+result = slow_sum(100000)
+print(f'  Result: {result}')
+
+
+# ╔════════════════════════════════════════════════════════════════════════════════════╗
 # ║  SUMMARY: SESSION MAP                                                            ║
 # ╚════════════════════════════════════════════════════════════════════════════════════╝
 
@@ -1001,10 +1376,26 @@ print("""
     SESSION-085 : Returning functions, implicit state saving (closures)
     SESSION-086 : Function factory, higher-order functions, closure vs class
 
+  FUNCTION OBJECT ATTRIBUTES (ADVANCED def FEATURE):
+    function.__name__        : Name of the function as a string
+    function.__annotations__ : Dictionary of type annotations
+    function.__dict__        : Custom attributes namespace
+    function.__code__        : Compiled bytecode (co_varnames, co_argcount, co_freevars)
+
+  LOCAL STATIC-LIKE VARIABLES (ADVANCED def FEATURE):
+    Technique 1 : Closure with nonlocal (counter, accumulator patterns)
+    Technique 2 : Function attribute via __dict__
+
   PARAMETER PASSING:
     SESSION-068 : Extra non-keyword arguments (*args), variadic functions
     SESSION-087 : Parameter passing intro (6 types, Golden Rule, Insights)
     SESSION-088 : Parameter passing advanced (MasterFunction, all types combined)
+
+  UNIVERSAL FUNCTION WRAPPER (ADVANCED def FEATURE):
+    Universal formal parameter list : def wrapper(*args, **kwargs)
+    Universal wrapper pattern       : Wrap any function, forward all arguments
+    Logger / Decorator              : Real-world application (OPEN_FOR_ALL_WEEK)
+    Timing wrapper                  : Practical example of decorator pattern
 """)
 
 print('=' * 70)
