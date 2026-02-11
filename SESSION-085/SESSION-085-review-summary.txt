@@ -1,0 +1,55 @@
+Session 085 Review Summary
+===========================
+
+Session 085 contains 2 Python scripts introducing the concept of returning
+functions as data objects, leading into closures and implicit state saving.
+All scripts ran successfully with correct output.
+
+
+File-by-file review:
+
+01-Returning-Function-As-If-It-Were-A-Data-Object.py
+--------------------------------------
+Demonstrates that functions in Python are first-class objects. outer() defines
+inner() and returns it (without calling it). The returned function object is
+assigned to global variable X. type() and id() calls confirm that X and inner
+reference the same function object. Calling X() then executes inner().
+
+Output:
+  outer():type(inner): <class 'function'>
+  outer():id(inner): <memory address>
+  global():type(X): <class 'function'>
+  global():id(X): <memory address>
+  global():Putting call operator on global variable X
+  inner():Function entered
+  inner():Function leaving
+  global():End of program
+
+
+02-Implicit-State-Saving-Prep.py
+--------------------------------------
+Builds on script 01 by adding a local variable num = 500 inside outer(). When
+outer() returns inner and inner is later called via X(), inner still has access
+to num despite outer() having finished execution. This demonstrates the
+foundation of closures: the inner function captures the enclosing scope's
+variable. The IDLE log confirms locals() inside inner includes {'num': 500}.
+
+Output:
+  outer():type(inner): <class 'function'>
+  outer():id(inner): <memory address>
+  global():type(X): <class 'function'>
+  global():id(X): <memory address>
+  global():Putting call operator on global variable X
+  inner():Function entered
+  inner():num: 500
+  inner():Function leaving
+  global():End of program
+
+
+IDLE Log Coverage:
+The IDLE log PDF demonstrates the same closure mechanics interactively, showing
+that locals() within inner() contains {'num': 500}, confirming that the
+enclosing variable is captured in the nested function's scope.
+
+All code is correct, runs without errors, and produces the expected output.
+No issues found.
