@@ -1,0 +1,142 @@
+Session 084 Review Summary
+===========================
+
+Session 084 contains 7 Python scripts and 1 reference document covering the
+global and nonlocal statements in Python. The session progresses from
+demonstrating the scoping problems that motivate these statements, through
+the solutions each provides.
+
+Scripts 01-03 intentionally raise errors (UnboundLocalError, NameError) to
+illustrate the problems. Scripts 04-07 demonstrate the solutions using
+global and nonlocal. All scripts behave as expected.
+
+
+File-by-file review:
+
+01-UnboundLocalError-Again.py
+--------------------------------------
+Revisits UnboundLocalError with two code fragments. Fragment 1 (lines 1-11):
+N=100 at global scope, then f() tries to print(N) before assigning N=300
+locally. Because N appears on the LHS later in f(), Python treats N as local
+throughout f(), so the print() raises UnboundLocalError. Fragment 2 (lines
+16-24): The harder-to-spot case where N = N + 1 causes UnboundLocalError
+because the LHS assignment makes N local, but the RHS reads N before it
+exists.
+
+Output (script stops at first error, fragment 2 never reached):
+  UnboundLocalError: cannot access local variable 'N' where it is not
+  associated with a value
+
+Note: Because both fragments are in the same script file, only the first
+fragment executes before the error halts the program. In an IDLE session
+these would be run as separate fragments.
+
+
+02-NameError-Free-Varaible-Version.py
+--------------------------------------
+Demonstrates NameError for free variables across four code fragments.
+Fragment 1 (lines 2-10): N=100 defined before inner(), inner() prints N
+successfully. Fragment 2 (lines 15-20): N=100 defined after inner()'s def
+but before inner() is called, still works because the binding exists at call
+time. Fragment 3 (lines 25-30): inner() is called before N=100 is assigned,
+raising NameError because the free variable N has no value yet. Fragment 4
+(lines 39-45): N is defined then deleted with del N before inner() is
+called, also raising NameError.
+
+Output (stops at fragment 3, fragment 4 never reached):
+  inner():N: 100
+  inner():N: 100
+  NameError: cannot access free variable 'N' where it is not associated
+  with a value in enclosing scope
+
+Note: Filename contains typo "Varaible" (should be "Variable").
+
+
+03-global-statement-prep.py
+--------------------------------------
+Sets up two scenarios that motivate the global statement. Scenario 1
+(lines 3-9): N=100 global, outer N=200 hides global N, inner g() prints
+enclosing N (200). Scenario 2-A (lines 19-22): f() assigns N=500 locally
+instead of modifying global N. Scenario 2-B (lines 25-29): f() tries
+N = N + 1, causing UnboundLocalError.
+
+Output (stops at Scenario 2-B):
+  N: 200
+  UnboundLocalError: cannot access local variable 'N' where it is not
+  associated with a value
+
+
+04-Solution-to-Scenario-1-using-global-statement.py
+--------------------------------------
+Shows the BEFORE/AFTER for Scenario 1. BEFORE: inner() prints enclosing
+N (200), hiding global N (100). AFTER: inner() declares global N, so
+print(N) outputs 100 (the global value), bypassing the enclosing scope's
+N=200. Then N=500 modifies the global variable directly.
+
+Output:
+  200
+  100
+
+
+05-Solution-To-Scenario-2-A-2-B.py
+--------------------------------------
+Solves both Scenario 2-A and 2-B using global. Scenario 2-A: f() declares
+global N then assigns N=500, successfully modifying the global variable
+from 100 to 500. Scenario 2-B: f() declares global N then does N = N + 1,
+successfully incrementing global N from 100 to 101.
+
+Output:
+  global: Value of global N before call to f(): 100
+  global: Value of global N after call to f(): 500
+  global:Value of N before call to f(): 100
+  global:Value of N after call t f(): 101
+
+Note: Minor typo on line 40: "after call t f()" should be "after call to f()".
+
+
+06-Nonlocal-Statement-Prep.py
+--------------------------------------
+Demonstrates the limitation of global: when inner() wants to modify
+outer()'s local N (not a global variable), using N=500 in inner() just
+creates a new local variable. The global statement cannot help because N
+lives in the enclosing scope, not the global scope. This motivates the
+need for nonlocal.
+
+Output: (no visible output, runs silently)
+
+
+07-nonlocal-demo.py
+--------------------------------------
+Two demonstrations of the nonlocal statement. Demo 1 (lines 1-9): outer()
+sets N=500, inner() declares nonlocal N and sets N=1000. After inner()
+runs, outer()'s N is modified from 500 to 1000. Demo 2 (lines 11-23):
+Deeply nested functions f1/f2/f3/f4 where f4() declares nonlocal N and
+modifies f1()'s N from 100 to 200, demonstrating that nonlocal traverses
+multiple enclosing scopes.
+
+Output:
+  outer():N before call to inner(): 500
+  outer():N after call to inner(): 1000
+  f1():Before call to f2():N: 100
+  f1():After call to f2():N: 200
+
+
+global-statement-syntax.txt
+--------------------------------------
+Reference document covering the global statement's syntax (single variable
+or comma-separated list), constraints (must appear inside a function def),
+and behavior (binds all references to the variable to the global symbol
+table, overriding LEGB rule and default LHS treatment).
+
+
+Minor issues found:
+  1. Filename typo in 02: "Varaible" should be "Variable"
+  2. Typo on line 40 of 05: "after call t f()" should be "after call to f()"
+  3. Scripts 01-03 contain multiple code fragments that intentionally raise
+     errors, but only the first error-producing fragment runs when executed
+     as a script (later fragments are unreachable). This is expected for
+     IDLE-style demonstrations.
+
+All code is correct and produces the expected output. The session provides
+a clear progression from problem (scoping errors) to solution (global and
+nonlocal statements).
