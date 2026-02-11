@@ -1,0 +1,50 @@
+Session 086 Review Summary
+===========================
+
+Session 086 contains 3 Python scripts focused on closures and implicit state saving.
+All scripts ran successfully with correct output.
+
+
+File-by-file review:
+
+01-implicit-state-saving-revision.py
+--------------------------------------
+Demonstrates the core closure concept: when outer() returns inner, the nested
+function retains access to outer()'s local variable N even after outer() has
+finished executing. Two patterns are shown - calling inner() inside outer()
+(Pattern 1), vs. returning it for later use (Pattern 2). Both print
+inner():N: 100.
+
+Output:
+  inner():N: 100
+  inner():N: 100
+  inner():N: 100
+
+
+02-FunctionFactory.py
+--------------------------------------
+A practical application of closures as a factory pattern.
+PowerFunctionFactory(N) creates specialized power functions by closing over N.
+
+Output:
+  mySquareFunction(2): 4
+  myCubeFunction(2): 8
+  myRaisedToSevenFunction(2): 128
+
+
+03-implicit-state-vs-explicit-state.py
+--------------------------------------
+Contrasts two state-management approaches: a class-based approach (commented out)
+using self.N vs. nested functions using nonlocal N. The nested-function version
+returns a (getn, setn) tuple, effectively mimicking getter/setter methods.
+Output confirms correct state transitions: 100 -> 200 -> 500.
+
+Output:
+  NESTED DEF STATEMENT
+  100
+  200
+  500
+
+
+All code is correct, runs without errors, and produces the expected output.
+No issues found.
