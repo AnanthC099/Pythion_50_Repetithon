@@ -1,7 +1,7 @@
 class Point2D: 
     def __init__(self, init_x:float, init_y:float): 
         acceptable_types = [int, float]
-        if type(init_x) is not in acceptable_types or type(init_y) is not in acceptable_types: 
+        if type(init_x) not in acceptable_types or type(init_y) not in acceptable_types:
             raise TypeError('Bad type: initialization data')
         self.x, self.y = init_x, init_y 
 
@@ -29,7 +29,7 @@ class Triangle:
 
     def area(self) -> float: 
         s = self.perimeter() / 2.0 
-        return ((s - self.AB) * (s - self.BC) * (s - self.CA)) ** 0.5 
+        return (s * (s - self.AB) * (s - self.BC) * (s - self.CA)) ** 0.5
 
     def triangle_type(self) -> str: 
         if self.AB == self.BC and self.BC == self.CA and self.CA == self.AB: 
@@ -37,7 +37,7 @@ class Triangle:
         elif self.AB == self.BC or self.BC == self.CA or self.CA == self.AB: 
             return "Isosceles"
         else: 
-            return "Scalen"
+            return "Scalene"
 
 # Write a client side to rigorously test the code 
 # Try to generate intelligent boundary cases         

@@ -5,7 +5,7 @@ We are implementing a positional vector in Three Dimensional Euclidean Space
 class Vector3D: 
     def __init__(self, x:float, y:float, z:float): 
         acceptable_types = [int, float]
-        if type(x) is not in acceptable_types or type(y) is not acceptable_types or type(z) is not acceptable_types: 
+        if type(x) not in acceptable_types or type(y) not in acceptable_types or type(z) not in acceptable_types:
             raise TypeError('Bad type: for initialization data')
         self.x, self.y, self.z = x, y, z 
 
