@@ -1,0 +1,77 @@
+SESSION-092: Concepts Taught
+=============================
+
+This session continues Object-Oriented Programming (OOP) with two new
+geometric/mathematical classes, emphasizing composition, richer method
+design, and rigorous client-side testing.
+
+
+01-Triangle.py
+--------------
+Concept: Class Composition, Classification Logic, and Boundary Testing
+
+- Reuses the Point2D helper class (same as SESSION-091, File 02) to
+  represent vertices, reinforcing the composition pattern.
+- Defines a Triangle class that accepts three Point2D objects.
+    - Constructor computes side lengths automatically via
+      Point2D.distance().
+    - Validates geometric feasibility using the triangle inequality
+      (sum of any two sides must exceed the third).
+- Instance methods:
+    - perimeter(): sum of the three sides.
+    - area(): Heron's formula using the semi-perimeter.
+    - triangle_type(): classifies the triangle as Equilateral, Isosceles,
+      or Scalene by comparing side lengths.
+- Use of math.isclose() for floating-point comparison, teaching that
+  direct equality (==) is unreliable for floats due to precision errors.
+- Comprehensive client-side testing:
+    - Normal cases: Scalene, Equilateral, Isosceles, and Right triangles.
+    - Boundary/edge cases tested with try-except blocks:
+        - Collinear points (degenerate triangle).
+        - Wrong type passed as a vertex.
+        - Duplicate (coincident) points.
+  This demonstrates defensive programming and the importance of writing
+  test cases that cover both valid and invalid inputs.
+
+
+02-Vector3D.py
+--------------
+Concept: Modeling Mathematical Objects (Vectors) with OOP
+
+- Defines a Vector3D class representing a positional vector in 3D
+  Euclidean space with components (x, y, z).
+- Constructor with type validation (int/float only).
+- Rich set of vector operation methods:
+    - add(): vector addition, returns a new Vector3D.
+    - subtract(): vector subtraction, returns a new Vector3D.
+    - mod(): magnitude (Euclidean norm) of the vector.
+    - normalize(): returns the unit vector (vector / its magnitude).
+      Raises ValueError for the zero vector (undefined direction).
+    - dot(): scalar (dot) product of two vectors.
+    - cross(): vector (cross) product of two vectors, computed using
+      the determinant formula (component-wise expansion).
+    - show(): displays the vector in i, j, k notation.
+- Each method that operates on two vectors validates the type of both
+  operands, reinforcing input validation practices.
+- Client-side testing demonstrates:
+    - Basic operations: addition, subtraction, magnitude, normalization.
+    - Verification of mathematical properties:
+        - The normalized vector has magnitude 1.
+        - The cross product is perpendicular to both input vectors
+          (verified by checking dot products equal zero).
+    - Standard basis vector identities: i x j = k, j x k = i, k x i = j.
+    - Boundary cases:
+        - Zero vector normalization (should raise ValueError).
+        - Non-numeric input (should raise TypeError).
+
+
+Overall Session Theme
+---------------------
+Building classes that model well-known mathematical objects (Triangle and
+Vector3D), with emphasis on:
+  1. Composition (Triangle built from Point2D objects).
+  2. Returning new objects from methods (immutable operation style).
+  3. Floating-point comparison with math.isclose().
+  4. Thorough client-side testing including boundary and edge cases.
+  5. Mathematical verification of computed results (e.g., cross product
+     perpendicularity, unit vector magnitude).
