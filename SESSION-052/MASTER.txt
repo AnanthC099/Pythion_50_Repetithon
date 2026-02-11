@@ -1,0 +1,38 @@
+START abc.txt 
+10 
+20 
+1.1
+56.7
+53
+5643
+END abc.txt 
+START pqr.txt 
+10234
+20234 
+1.1325
+56.72342
+532452
+56432424
+This is a somewhat new file 
+Writing some different contents in it 
+END pqr.txt START lmn.txt 
+10234
+20234 
+1.1325
+56.72342
+532452
+56432424
+END lmn.txt 
+START uvw.txt 
+10234
+20234 
+1.1325
+56.72342
+532452
+56432424
+This is a somewhat new file 
+Writing some different contents in it 
+HAHAHAHH
+HEEEEEHEHEHEHEH
+HUHUHUHUHU
+END uvw.txt 

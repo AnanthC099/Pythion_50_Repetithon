@@ -1,0 +1,33 @@
+open(file_path, mode)
+
+1) IF mode == 'w' 
+    If the file to be opened is not present on the disk then it will be created 
+    and then it will be opened for the writing purpose. 
+
+    CREATED DETAILS: 
+        file_path = absolute or relative 
+        EVENTUALLY IT WILL BE CONVERTED INTO AN ABSOLUTE PATH 
+
+        ABSOLUTE PATH = DIRNAME + BASE-NAME 
+
+        If mode is write and ALL PATH NAME COMPONENTS IN DIR NAME 
+        ARE PRESENT AND ONLY BASE-NAME IS NOT PRESENT IN DIR NAME 
+        THEN IT WILL BE CREATED. 
+
+        open('abc.txt', 'w')
+
+        abc.txt -> relative path name 
+
+        convert it into absolute path 
+
+        C:\Users\CPA\Docuemnts\CLASS\SESSION-049\abc.txt
+
+        BASENAME(DIRNAME(C:\Users\CPA\Docuemnts\CLASS\SESSION-049\abc.txt))
+        ==
+        BASENAME(C:\Users\CPA\Docuemnts\CLASS\SESSION-049)
+        ==
+        SESSION-049
+
+    If the file represented by path name is present THEN 
+    THE FILE WILL TRUNCATED (= ITS EXISTING CONTENTS WILL BE DELETED)
+    And then it will be opened for writing 

@@ -1,0 +1,75 @@
+Under Python programming language, following four entities have their own scope 
+i.e. have their own symbol table 
+1) Module 
+2) Function 
+3) Class 
+4) Object 
+#-----------------------------------------------------------------------------------
+Unlike C++ Python programming language does not create a scope for every block. 
+In C++ we call it as a block-level scoping. Python programming language has a block 
+structure but does not have block level scoping. 
+#-----------------------------------------------------------------------------------
+When you create a new Python source file, Python considers that you have created a 
+new module whose name is equal to source file name without .py prefix. 
+For example, if you create a Python source file, test.py then Python considers 
+that you have created a module named 'test'. 
+
+When a module is created (i.e. when you save a .py file) one scope automatically comes 
+into picture -> a global scope aka module scope. 
+
+As explained above, EVERY BLOCK != NEW SCOPE IN PYTHON. 
+
+Only two block statements can introduct a new scope. 
+1) def statement 
+2) class statement 
+
+Rest of the block statements 
+1) if statement 
+2) if-else statement 
+3) if-elif-else statement 
+4) for statement 
+5) while statement 
+6) for-else statement 
+7) while-else statement 
+8) try-except statement 
+9) try-except-else statement 
+10) try-except-finally statement 
+11) try-except-else-finally statement 
+12) with statement 
+
+DO NOT INTRODUCE NEW SCOPE IN A FILE. 
+
+xyz.py
+
+for x in [10, 20, 30, 40]: 
+    for y in (100, 200, 300, 400): 
+        z = x + y   # Even though z is defined at indentation level 2 and not 0
+                    # z will be placed in a global symbol table 
+
+class T1: 
+    BODY 
+
+class T2: 
+    BODY 
+
+
+
+
+class T10: 
+    BODY 
+
+def f1(): 
+    BODY 
+
+def f2(): 
+    def g(): 
+        def h():
+            try: 
+                for x in L: 
+                    for y in L: 
+                        # do something with x and y
+            except: 
+                BODY 
+
+def f3(): 
+    BODY 

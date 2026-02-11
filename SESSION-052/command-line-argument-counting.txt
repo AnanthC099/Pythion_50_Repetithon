@@ -1,0 +1,31 @@
+# python ncp.py 
+
+argc = 1 
+argv = ['ncp.py']
+
+# python ncp.py abc.txt 
+
+argc = 2 
+argv = ['ncp.py', 'abc.txt']
+
+# python ncp.py abc.txt pqr.txt 
+argc = 3 
+argv = ['ncp.py', 'abc.txt', 'pqr.txt']
+
+# python ncp.py abc.txt pqr.txt lmn.txt uvw.txt MASTER.txt 
+argc = 6  
+argv = ['ncp.py', 'abc.txt', 'pqr.txt', 'lmn.txt', 'uvw.txt', 'MASTER.txt']
+
+argc == len(argv)
+
+INDEX       FILE
+0           SOURCE CODE (ncp.py)
+1           SOURCE_FILE_1
+2           SOURCE_FILE_2
+3           SOURCE_FILE_3 
+.
+.
+.
+argc-2      SOURCE_FILE_LAST 
+argc-1      DESTINATION FILE 
+

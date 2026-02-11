@@ -1,0 +1,7 @@
+This is a first line in the file
+CoreCode Programming Academy
+True
+10
+3.14
+Hello
+This is the last line in the file

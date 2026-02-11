@@ -1,0 +1,16 @@
+This is a text file. 
+I am going to write some random content in it. 
+Python's type system is dynamic and inferred in nature. 
+Variable names do not have types in Python. 
+
+Following are the built in data types in Python: 
+    1)      Boolean 
+    2)      Integer 
+    3)      Float
+    4)      String 
+    5)      List 
+    6)      Tuple 
+    7)      Dictionary 
+    8)      Set 
+
+End of the file 

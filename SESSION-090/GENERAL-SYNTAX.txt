@@ -1,0 +1,22 @@
+If v is a name of object 
+
+v.new_attribute_name = value 
+
+will add 
+
+'new_attribute_name' : value pair 
+in the dictionary present in 
+value component of object named by v 
+
+You want to change the value corrossponding to 
+existing attribute 
+
+v.existing_attribute_name = new_value 
+
+If you want to remove the existing attribute 
+
+del v.existing_attribute_name
+
+If you want to acess the current value of the existing attribute 
+
+v.existing_attribute_name -> RHS sense 

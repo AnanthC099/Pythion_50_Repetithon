@@ -1,0 +1,7 @@
+This is a test file. 
+Python is a magical language when you know how to code like a Pythonist ! 
+
+It is important to know internal memory management details 
+for effectively using Python. 
+
+This is the last line in the file. 

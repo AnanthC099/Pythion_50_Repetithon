@@ -1,0 +1,63 @@
+Fundamentals -> All covered 
+    -   Interpreted programming languages, Interpreter, how Python program is written and executed 
+    -   General memory model (Computer Fundamentals)
+    -   Python Program Execution Memory Model (System Memory - Program Memory etc)
+    -   Assignment Statement 
+    -   Object Model Of Python (internal format of object etc)
+    -   Detailed case wise internal algorithm of assignment statement 
+        (symbol table, garbage collection & reference counting, reference varaible)
+    -   bool, int, float data types, basic arithmetic operators 
+    -   Branching statements 
+            -   if statement 
+            -   if/else statement 
+            -   if/elif/else statement 
+    -   Looping statements 
+            -   while loop 
+            -   concept of iterable object 
+            -   for loop 
+            -   break 
+            -   continue 
+            -   pass 
+            -   for-else 
+            -   while-else 
+    -   Classification of built in data types: 
+            -   Atomic - bool int float 
+            -   container - sequential, associative, neither 
+            -   list, tuple, str, dict, set 
+            -   deep study of methods of all built in types 
+
+-   Procedural Programming 
+    -   Basic 
+            -   How to define and call functions 
+            -   Formal and actual parameters, parameter passing 
+            -   Input validation -> run time type checking, run time value checking 
+            -   throwing the exceptions : TypeError and ValueError 
+            -   Type annotations: How annotate desired type of formal parameter and return type annotation 
+            -   reutrn statement 
+    -   Advanced 
+            -   ENTIRE ADVANCED PART IS REMAINING 
+
+-   Functional Programming Paradigm     -> Almost complete 
+        -   lambda expression 
+        -   map, filter, reduce 
+        -   combining map, filter, reduce, lambda 
+        -   Functional programming theory in depth 
+        -   (REMAINING -> HIGHER ORDER FUNCTION)
+
+-   Object Oriented Programming Paradigm 
+        -   class statement to define a new data type 
+        -   Constructor __init__() 
+        -   self 
+        -   Object namespace (self.__dict__)
+        -   Class namespace (class name.__dict__)
+        -   How to add a class method 
+
+        REMAINING -> Operator overloading (entire), Inheritance (entire), Exception Handling (entire)
+
+-   Truely advanced Python topics 
+        -   ALL REMAINING (iterator, context management protocol, decorator, attribute management, meta-class)
+
+-   Application development 
+    -   file handling, directory handling, tkinter - Done 
+    -   remaining -> process, thread, regular expression, db connectivity 
+    -   ML/DS -> entire coding part (basic concepts are over)

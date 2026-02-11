@@ -1,0 +1,34 @@
+Topics in advanced def statement 
+    1)  Nested def statement -> Control flow - Memory Management (TODAY)
+    2)  Global and Local Symbol Tables 
+    3)  globals(), locals() built in functions 
+    4)  Scope-Visibility-Lifetime Model Of Python Programming Language 
+        -   Problem of Visibility. 
+        -   Scope - As a solution to problem of Visibility 
+        -   Scopes in Python Programming Language
+                -   local 
+                -   enclosing 
+                -   global 
+                -   built - in 
+        -   LHS variable treatment 
+        -   RHS variable treatment also known as LEGB scope rule 
+        -   UnboundLocal Error : Scenarios and Solutions 
+        -   Name Error - Free variable Message - Scenarios and Solitions 
+        -   global statement 
+        -   nonlocal statement 
+        -   function.__name__, function.__dict__, function.__annotations__, function.__code__ 
+        -   local static like variables in Python 
+    5)  Implicit state saving 
+    6)  Function factory design pattern and higher order functions 
+    7)  Parameter Passing Exhaustive treatment 
+        -   Types of formal parameter  
+                -   positional arguments 
+                -   keyword arguments 
+                -   extra non-keyword argument 
+                -   default arguments 
+                -   keyword only arguments 
+                -   extra non-keyword arguments 
+        -   ways of writing actual parameters : keyword & non-keyword syntax 
+        -   Universal formal parameter list 
+        -   Universal function wrapper 
+#------------------------------------------------------------------------------------------------

@@ -1,0 +1,18 @@
+GENERAL SYTAX: 
+    - global variable_name 
+    - global v1, v2, ...., vn   # comma separated list of multiple variable names 
+    - global is a keyword as well as statement 
+
+CONSTRAINTS: 
+    - global statement must be written inside function definition that it must be a part 
+      body of def statement. In all other places it will either generate syntax error 
+      or will have no effect ! 
+
+DESCRIPTION OF BEHAVIOUR: 
+    - When you declare a variable 'global' using global statement inside some function 
+    then it is an order given to Python to treat all references to that variable 
+    (RHS or LHS) in that function by considering it a global variable 
+
+    In more technical terms, all references to a variable qualified by keyword global 
+    in a function are bound to global symbol table overriding usual LHS treatment 
+    or RHS treatment (LEGB rule)

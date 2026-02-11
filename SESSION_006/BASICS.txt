@@ -1,0 +1,29 @@
+DATA TYPE:  class 
+ALGORITHM:  function
+
+Even if you want to write smallest of source code:
+    1) Define class.
+    2) Create data from defined class.
+    3) Define function.
+    4) Process data by passing it to defined function.
+
+Programming Language:
+    1) Some classes are defined by programming language.
+    2) Some algorithms (functions) are defined by programming language
+    These are known as BUILT IN CLASSES AND BUILT IN FUNCTIONS
+
+EIGHT BUILT IN TYPES:
+    (1) bool
+    (2) int
+    (3) float
+    (4) str (string)
+    (5) list
+    (6) tuple
+    (7) dict (dictionary)
+    (8) set
+Built in functions
+    (1) print()
+    (2) id()
+    (3) type() (technically class)
+    
+

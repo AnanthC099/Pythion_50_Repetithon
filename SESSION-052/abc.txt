@@ -1,0 +1,8 @@
+START abc.txt 
+10 
+20 
+1.1
+56.7
+53
+5643
+END abc.txt 
