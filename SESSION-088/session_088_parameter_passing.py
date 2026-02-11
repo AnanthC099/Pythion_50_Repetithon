@@ -2,11 +2,13 @@
 Session 088: Python Parameter Passing
 Topics covered:
   1. Extra non-keyword arguments (*args) - isolation and with positional params
-  2. Keyword-only arguments (after *args)
-  3. Default arguments
-  4. Extra keyword arguments (**kwargs)
-  5. MasterFunction integrating all parameter types
-  6. Non-default after default parameter rule
+  2. Positional vs keyword argument calling and SyntaxError demo
+  3. Keyword-only arguments (after *args)
+  4. Default arguments
+  5. Built-in print() as example of default/keyword args
+  6. Extra keyword arguments (**kwargs)
+  7. MasterFunction integrating all parameter types
+  8. Non-default after default parameter rule
 """
 
 print("=" * 60)
@@ -34,6 +36,19 @@ testFunction_positional(10, 20, 30, 40)
 testFunction_positional(10, 20, 30, 40, [100, 200, 300])
 testFunction_positional(10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160)
 
+# ── 2a. Positional vs keyword argument calling ───────────────
+print("\n--- 2a. Positional vs keyword argument calling ---")
+
+def testFunctionOne(a, b, c):
+    print(a, b, c)
+
+testFunctionOne(10, 20, 30)
+testFunctionOne(a=10, b=20, c=30)
+
+# This would be a SyntaxError:
+# testFunction(a=10, b=20, c=30, 40, 50, 60)
+# SyntaxError: positional argument follows keyword argument
+
 # ── 3. Keyword-only arguments after *args ────────────────────
 print("\n--- 3. Keyword-only arguments after *args ---")
 
@@ -58,6 +73,14 @@ testFunction_default(a=100)
 testFunction_default(100)
 testFunction_default(10, 20, 300)
 testFunction_default(c=300)
+
+# ── 4a. Built-in print() as example of default/keyword args ──
+print("\n--- 4a. Built-in print() as example of default/keyword args ---")
+
+print('Hello,world')
+print(10)
+print(10, 20)
+print(10, 20, 30, 40, sep=':')
 
 # ── 5. Integrating default with positional, *args, keyword-only ──
 print("\n--- 5. Default + positional + *args + keyword-only ---")
