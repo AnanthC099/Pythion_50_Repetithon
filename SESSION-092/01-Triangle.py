@@ -31,12 +31,13 @@ class Triangle:
         s = self.perimeter() / 2.0 
         return (s * (s - self.AB) * (s - self.BC) * (s - self.CA)) ** 0.5
 
-    def triangle_type(self) -> str: 
-        if self.AB == self.BC and self.BC == self.CA and self.CA == self.AB: 
+    def triangle_type(self) -> str:
+        from math import isclose
+        if isclose(self.AB, self.BC) and isclose(self.BC, self.CA):
             return "Equilateral"
-        elif self.AB == self.BC or self.BC == self.CA or self.CA == self.AB: 
+        elif isclose(self.AB, self.BC) or isclose(self.BC, self.CA) or isclose(self.CA, self.AB):
             return "Isosceles"
-        else: 
+        else:
             return "Scalene"
 
 # Write a client side to rigorously test the code
