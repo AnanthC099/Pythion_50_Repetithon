@@ -39,5 +39,74 @@ class Triangle:
         else: 
             return "Scalene"
 
-# Write a client side to rigorously test the code 
-# Try to generate intelligent boundary cases         
+# Write a client side to rigorously test the code
+# Try to generate intelligent boundary cases
+
+#-----------------------CLIENT SIDE CODE-----------------------------------
+
+# Scalene triangle
+P1 = Point2D(0.0, 0.0)
+P2 = Point2D(4.0, 0.0)
+P3 = Point2D(1.0, 3.0)
+
+T1 = Triangle(P1, P2, P3)
+print('--- Scalene Triangle ---')
+print(f'Perimeter: {T1.perimeter()}')
+print(f'Area: {T1.area()}')
+print(f'Type: {T1.triangle_type()}')
+
+# Equilateral triangle (side length 2)
+A = Point2D(0.0, 0.0)
+B = Point2D(2.0, 0.0)
+C = Point2D(1.0, 3**0.5)
+
+T2 = Triangle(A, B, C)
+print('\n--- Equilateral Triangle ---')
+print(f'Perimeter: {T2.perimeter()}')
+print(f'Area: {T2.area()}')
+print(f'Type: {T2.triangle_type()}')
+
+# Isosceles triangle
+X = Point2D(0.0, 0.0)
+Y = Point2D(4.0, 0.0)
+Z = Point2D(2.0, 5.0)
+
+T3 = Triangle(X, Y, Z)
+print('\n--- Isosceles Triangle ---')
+print(f'Perimeter: {T3.perimeter()}')
+print(f'Area: {T3.area()}')
+print(f'Type: {T3.triangle_type()}')
+
+# Right triangle (3-4-5)
+R1 = Point2D(0.0, 0.0)
+R2 = Point2D(3.0, 0.0)
+R3 = Point2D(0.0, 4.0)
+
+T4 = Triangle(R1, R2, R3)
+print('\n--- Right Triangle (3-4-5) ---')
+print(f'Perimeter: {T4.perimeter()}')
+print(f'Area: {T4.area()}')
+print(f'Type: {T4.triangle_type()}')
+
+#-----------------------BOUNDARY CASES-------------------------------------
+
+# Collinear points - should raise ValueError
+try:
+    T_bad = Triangle(Point2D(0.0, 0.0), Point2D(1.0, 1.0), Point2D(2.0, 2.0))
+    print('\nERROR: Collinear points should have raised ValueError')
+except ValueError as e:
+    print(f'\nCollinear points correctly rejected: {e}')
+
+# Bad type - should raise TypeError
+try:
+    T_bad = Triangle(Point2D(0.0, 0.0), Point2D(1.0, 1.0), "not a point")
+    print('ERROR: Bad type should have raised TypeError')
+except TypeError as e:
+    print(f'Bad type correctly rejected: {e}')
+
+# Duplicate points - should raise ValueError
+try:
+    T_bad = Triangle(Point2D(1.0, 1.0), Point2D(1.0, 1.0), Point2D(3.0, 4.0))
+    print('ERROR: Duplicate points should have raised ValueError')
+except ValueError as e:
+    print(f'Duplicate points correctly rejected: {e}')
