@@ -20,6 +20,13 @@ def positional_demo(a, b, c):
 
 positional_demo(10, 20, 30)
 
+print("\n--- 1b. Positional argument with boolean values ---")
+
+def bool_demo(a, b, c, d):
+    print(f"  a={a}, b={b}, c={c}, d={d}")
+
+bool_demo(False, True, False, True)
+
 # ── 2. Keyword argument (calling with keyword syntax) ─────────
 print("\n--- 2. Keyword argument (calling with keyword syntax) ---")
 
@@ -83,6 +90,9 @@ positional_demo(10, 20, 30)         # all non-keyword
 positional_demo(10, 20, c=30)       # switch to keyword at c — OK
 positional_demo(10, b=20, c=30)     # switch to keyword at b — OK
 positional_demo(a=10, b=20, c=30)   # all keyword — OK
+
+print("\nValid call — non-keyword + reordered keyword syntax:")
+bool_demo(10, d=40, b=20, c=30)     # keyword args can appear in any order
 
 print("\nInvalid call (would raise SyntaxError):")
 print("  positional_demo(a=10, 20, 30)")
