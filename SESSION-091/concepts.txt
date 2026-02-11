@@ -1,0 +1,54 @@
+SESSION-091: Concepts Taught
+=============================
+
+This session focuses on Object-Oriented Programming (OOP) applied to
+geometric modeling of Quadrilaterals, taught across two progressive files.
+
+
+01-Quadrilateral.py
+-------------------
+Concept: Basic Class Design with Primitive Attributes
+
+- Defining a class (Quadrilateral) with an __init__ constructor.
+- Using type hints in method signatures (init_s1:float, -> float).
+- Input validation inside the constructor:
+    - Type checking: ensuring all sides are int or float.
+    - Value checking: ensuring all sides are positive.
+    - Geometric validity: verifying that the sum of any three sides
+      is greater than the fourth (quadrilateral inequality).
+- Raising built-in exceptions (TypeError, ValueError) for invalid input.
+- Instance attributes: storing data on self (self.s1, self.s2, etc.).
+- Instance methods:
+    - perimeter(): summing the four sides.
+    - area(): using Brahmagupta's formula (generalized for a cyclic
+      quadrilateral) with the semi-perimeter.
+- Creating an object and calling its methods from client-side code.
+
+
+02-Quadrilateral.py
+-------------------
+Concept: Object Composition (Using One Class Inside Another)
+
+- Defining a helper class (Point2D) to represent a 2D coordinate.
+    - Constructor with type validation.
+    - distance() method using the Euclidean distance formula.
+    - show() method for displaying coordinates.
+- Building the Quadrilateral class using Point2D objects as attributes
+  instead of raw numeric sides. This demonstrates composition -- a
+  Quadrilateral "has-a" Point2D at each vertex.
+- Automatically computing side lengths from Point2D vertices inside
+  the constructor using Point2D.distance().
+- Same validation patterns as File 01 (type checking, value checking,
+  geometric inequality), but now operating on derived side lengths.
+- Demonstrates how composition leads to cleaner, more modular design:
+  the client creates Point2D objects first, then passes them to
+  Quadrilateral, keeping concerns separated.
+- Inline comments showing the equivalent explicit constructor call
+  vs. using pre-created variables.
+
+
+Overall Session Theme
+---------------------
+Progression from a simple class with primitive parameters to a composed
+class that builds on another class, illustrating how real-world objects
+can be modeled by combining smaller, reusable components.
