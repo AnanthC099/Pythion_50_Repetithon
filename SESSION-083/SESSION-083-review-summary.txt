@@ -1,0 +1,66 @@
+Session 083 Review Summary
+===========================
+
+Session 083 contains 2 Python scripts covering LEGB scope resolution and the
+UnboundLocalError. The session bridges Session 082 (which introduced LEGB and
+UnboundLocalError in detail) and Session 084 (which introduces the global and
+nonlocal statements as solutions). These two scripts reinforce the core scoping
+concepts with compact, focused examples.
+
+
+File-by-file review:
+
+01-LEGB-yet-another-demo.py
+--------------------------------------
+Demonstrates LEGB scope resolution with four nested levels. Global N=10,
+f1() defines N=100, f2() (nested inside f1) defines N=1000, and f3() (nested
+inside f2) defines N=10000. When f3() calls print(N), Python resolves N using
+the LEGB rule starting at the Local scope, finding N=10000 immediately.
+
+This script reinforces that each nested function can shadow the same variable
+name, and the innermost (Local) binding always wins when all four LEGB levels
+define the same name.
+
+Output:
+  10000
+
+
+02-UnboundLocalErrorPrep.py
+--------------------------------------
+Prepares the student for understanding UnboundLocalError through Python's
+compile-time scope determination. Line 1 has num=100 commented out (#num=100),
+so no global num exists. test_function() attempts print('num:', num) on line 3,
+then assigns num=200 on line 4. Because num appears on the LHS (line 4),
+Python's compiler marks num as a local variable throughout the entire function
+body. The print() on line 3 therefore tries to read the local num before it has
+been assigned, raising UnboundLocalError.
+
+The comments on lines 8-14 walk through a thought exercise: if line 1 were
+uncommented (num=100 at global scope), a naive reading of LEGB might expect
+print('num:', num) to find the global num (100) and then num=200 to create a
+local binding — producing output "num: 100" then "num: 200". The comments label
+this the "RIGHT" expectation under pure LEGB, then immediately mark it "WRONG"
+because Python determines scope at compile time, not at runtime. The LHS
+assignment on line 4 makes num local for the entire function, so even with a
+global num=100, the print() on line 3 would still raise UnboundLocalError.
+
+The final comments reference "LAZY EVALUATION" vs "GREEDY EVALUATION" as
+conceptual labels for runtime vs compile-time scope determination.
+
+Output:
+  UnboundLocalError: cannot access local variable 'num' where it is not
+  associated with a value
+
+Note: The typo "EVLUATION" on line 15 should be "EVALUATION".
+
+
+Summary of findings:
+  1. Both scripts are correct and produce the expected output.
+  2. Script 01 is a clean, self-contained LEGB demo.
+  3. Script 02 deliberately triggers UnboundLocalError and uses comments to
+     contrast naive LEGB expectations with Python's actual compile-time scope
+     determination. This sets up Session 084's introduction of the global
+     statement as the solution.
+  4. Minor typo on line 15 of script 02: "EVLUATION" should be "EVALUATION".
+
+All code runs correctly and serves its pedagogical purpose.
